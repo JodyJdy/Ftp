@@ -13,6 +13,7 @@ public class DefaultInstruction extends Instruction {
 
     @Override
     public TransStruct execute() {
+        System.out.println("指令不存在");
         return null;
     }
 }
