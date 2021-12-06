@@ -47,7 +47,8 @@ public class FtpExchanger {
                     ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(ByteUtil.MB * 5, 0, 4));
                     ch.pipeline().addLast(bufDecoder);
                 }
-            });            //用于连接 connectAddress:connectPort
+            });
+            //用于连接 connectAddress:connectPort
             EventLoopGroup group = new NioEventLoopGroup(4);
             Bootstrap clientBootstrap = new Bootstrap();
             clientBootstrap.group(group);

@@ -4,13 +4,19 @@ package ftp.status;/**
 
 import ftp.ftpclient.trans.ChannelStatus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.concurrent.FutureTask;
 
 /** * 用于在记录客户端自身的状态 */
 public class ClientStatus extends Status {
     public ClientStatus() {
-        super.dir = "D:\\test\\client";
+        try {
+            super.dir = new File(".").getCanonicalPath();
+        } catch (IOException e) {
+            super.dir = System.getProperty("user.dir");
+        }
     }
 
     /**     * 历史命令     */
