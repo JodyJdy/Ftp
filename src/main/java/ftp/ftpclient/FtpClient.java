@@ -31,16 +31,22 @@ import java.util.Scanner;
  * ftp客户端
  **/
 public class FtpClient {
-    private final int port;
-    private final String address;
+    /**
+     * 服务端端口
+     */
+    private final int serverPort;
+    /**
+     * 服务端地址
+     */
+    private final String serverAddress;
     /**
      * 工作信道数量
      */
     private final int workerChannelNum;
 
-    public FtpClient(int port, String address, int workerChannelNum) {
-        this.port = port;
-        this.address = address;
+    public FtpClient(int serverPort, String serverAddress, int workerChannelNum) {
+        this.serverPort = serverPort;
+        this.serverAddress = serverAddress;
         this.workerChannelNum = workerChannelNum;
     }
 
@@ -54,7 +60,7 @@ public class FtpClient {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group);
             bootstrap.channel(NioSocketChannel.class);
-            bootstrap.remoteAddress(address, port);
+            bootstrap.remoteAddress(serverAddress, serverPort);
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) {
