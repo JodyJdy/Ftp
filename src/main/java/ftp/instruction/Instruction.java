@@ -17,7 +17,7 @@ public abstract class Instruction {
     }
 
     /**
-     * 指令的执行,一般在服务
+     * 指令的执行,一般在服务端
      */
     public abstract TransStruct execute();
 

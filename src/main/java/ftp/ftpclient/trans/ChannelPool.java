@@ -13,10 +13,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 public class ChannelPool {
     /**
-     * 空闲的 channel
+     * 空闲channel的id
      */
     private LinkedBlockingQueue<Integer> idleChannel = new LinkedBlockingQueue<>();
+    /**
+     * Channel 到 id的映射
+     */
     private Map<Channel, Integer> channelToId = new ConcurrentHashMap<>();
+    /**
+     * id 到 ChannelStatus的映射
+     */
     private Map<Integer, ChannelStatus> idToChannelStatus = new ConcurrentHashMap<>();
     private AtomicInteger integer = new AtomicInteger(0);
 
@@ -34,6 +40,7 @@ public class ChannelPool {
      * 获取一个空闲的channelStatus
      */
     ChannelStatus getIdleChannel() throws InterruptedException {
+       //阻塞式获取一个空闲Channel
         int id = idleChannel.take();
         return idToChannelStatus.get(id);
     }

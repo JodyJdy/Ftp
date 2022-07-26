@@ -4,7 +4,7 @@ import ftp.status.ClientStatus;
 import io.netty.channel.Channel;
 
 /**
- * * 记录channel以及channel的状态
+ * * 记录channel, 并维护一个 Channel的池,当前channel空闲后，放入ChannelPool中
  **/
 public class ChannelStatus {
     private final ClientStatus clientStatus;

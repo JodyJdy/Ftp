@@ -11,7 +11,7 @@ public class FileTransTaskQueue {
     private LinkedBlockingQueue<FileTransTask> instructionQueue = new LinkedBlockingQueue<>();
 
     /**
-     * 添加一个文件传输的任务到队列里面去，返回一个Future，任务是异步执行的，可以通过     * future.get()阻塞直到任务执行完毕
+     * 添加一个文件传输的任务到队列里面去，返回一个Future，任务是异步执行的，可以通过      future.get()阻塞直到任务执行完毕
      */
     public Future<Void> addFileTransTask(final String ins) {
         //任务完成后，打印内容

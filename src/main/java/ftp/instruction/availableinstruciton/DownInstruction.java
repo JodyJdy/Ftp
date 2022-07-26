@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * 下载指令  client -- > server * 指令格式: *   down fileName
+ * 下载指令  client -- > server     指令格式:  down fileName
  */
 public class DownInstruction extends Instruction {
     public DownInstruction(String ins, Status status) {

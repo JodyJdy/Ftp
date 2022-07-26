@@ -19,7 +19,7 @@ import io.netty.util.CharsetUtil;
 import java.io.IOException;
 
 /**
- * * @date 2021/12/3
+ * 文件上传下载是双向的， 复用BaseHandler，只需要考虑数据进出
  **/
 public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
     private final Status status;
@@ -46,7 +46,7 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
             if (response != null) {
                 ctx.writeAndFlush(response).sync();
             }
-            //数据传输
+        //数据传输
         } else if (TransType.DATA.getValue() == msg.getType()) {
             //本地读取向外发送
             if (status.getInputStream() != null) {
@@ -60,7 +60,7 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
                     default:
                         break;
                 }
-                // 外部读取保存到本地
+            //外部读取保存到本地
             } else if (status.getOutputStream() != null) {
                 if (msg.getContents() != null) {
                     status.getOutputStream().write(msg.getContents());

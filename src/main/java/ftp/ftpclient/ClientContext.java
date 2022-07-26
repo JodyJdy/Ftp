@@ -8,23 +8,30 @@ import io.netty.channel.Channel;
 
 import java.util.UUID;
 
-/** * 存储客户端对应的 上下文信息，只有一份 */
+/** * 存储客户端对应的 上下文信息，
+ *只有一份
+ *
+ * @// TODO: 2022/7/26   期望使用 ClientContext 解决 工作Channel与ClientStatus的映射关系
+ * */
 public class ClientContext {
-    private static Channel communicate;
+    /**
+     * 只进行指令的传输， 不传输文件
+     */
+    private static Channel communicateChannel;
     private static ClientStatus clientStatus;
     private static FileTransTaskQueue taskQueue;
     /**     * 客户端id     */
     private static String id = UUID.randomUUID().toString();
 
-    static Channel getCommunicate() {
-        return communicate;
+    static Channel getCommunicateChannel() {
+        return communicateChannel;
     }
 
-    static void setCommunicate(Channel communicate) {
-        if (ClientContext.communicate != null) {
+    static void setCommunicateChannel(Channel communicateChannel) {
+        if (ClientContext.communicateChannel != null) {
             return;
         }
-        ClientContext.communicate = communicate;
+        ClientContext.communicateChannel = communicateChannel;
     }
 
     public static ClientStatus getClientStatus() {

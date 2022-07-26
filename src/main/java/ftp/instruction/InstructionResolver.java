@@ -11,7 +11,7 @@ import java.lang.reflect.Constructor;
  **/
 public class InstructionResolver {
     /**
-     * 将指令的字符串形式解析为 Instruction对象     * @param ins 指令     * @param status 信道状态
+     * 将指令的字符串形式解析为 Instruction对象     @param ins 指令      @param status 信道状态
      */
     @SuppressWarnings("unchecked")
     public static Instruction resolver(String ins, Status status) {

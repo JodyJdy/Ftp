@@ -51,7 +51,7 @@ public class FtpClient {
     }
 
     public static void main(String[] args) throws Exception {
-        new FtpClient(8888, "localhost", 5).start();
+        new FtpClient(9900, "localhost", 5).start();
     }
 
     private void start() throws Exception {
@@ -71,10 +71,11 @@ public class FtpClient {
                 }
             });
             //连接服务端，并设置通信信道，信道状态到 客户端上下文对象中
-            ClientContext.setCommunicate(bootstrap.connect().sync().channel());
-            ClientContext.setClientStatus((ClientStatus) ClientContext.getCommunicate().pipeline().get(FtpClientHandler.class).getStatus());
+            ClientContext.setCommunicateChannel(bootstrap.connect().sync().channel());
+            //建立一个 专门传输指令的Channel
+            ClientContext.setClientStatus((ClientStatus) ClientContext.getCommunicateChannel().pipeline().get(FtpClientHandler.class).getStatus());
             List<ChannelStatus> statuses = new ArrayList<>();
-            //创建工作信道
+            //创建工作信道，用于传输文件
             for (int i = 0; i < workerChannelNum; i++) {
                 ChannelFuture tempFuture = bootstrap.connect().sync();
                 Channel tempChannel = tempFuture.channel();
@@ -91,7 +92,7 @@ public class FtpClient {
             //启动客户端命令行工具
             sendInstruction();
             //阻塞直到连接关闭
-            ClientContext.getCommunicate().closeFuture().sync();
+            ClientContext.getCommunicateChannel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();
         }
@@ -123,7 +124,7 @@ public class FtpClient {
                         instruction.process();
                     } else {
                         //目录下载命令，直接发送给服务端
-                        ClientContext.getCommunicate().writeAndFlush(StructTransUtil.generateInsStruct(ins));
+                        ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
                     }
                 }
             } else {
@@ -132,8 +133,9 @@ public class FtpClient {
                 //如果是本地执行指令，直接执行，直接执行，否则发送到服务端
                 if (InstructionResolver.localExec(ins)) {
                     instruction.execute();
+                //使用通信channel发送到服务端
                 } else {
-                    ClientContext.getCommunicate().writeAndFlush(StructTransUtil.generateInsStruct(ins));
+                    ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
                 }
             }
         } else {

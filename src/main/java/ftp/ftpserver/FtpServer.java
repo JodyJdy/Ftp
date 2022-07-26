@@ -25,7 +25,7 @@ public class FtpServer {
     }
 
     public static void main(String[] args) throws Exception {
-        new FtpServer(9999).start();
+        new FtpServer(9900).start();
     }
 
     private void start() throws Exception {
