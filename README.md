@@ -27,13 +27,16 @@ FtpExchanger可以用来中转数据，对于FtpClient与FptServer之间不能�
 * up 上传文件
    up srcFile dstDir 上传文件到server指定目录
    up srcFile  上传文件到server程序执行目录
-cd  切换目录
+* cd  切换目录
    cd .. 回到上一层目录
    cd dir 到指定的目录
-updir 上传目录
+* updir 上传目录
    updir srcDir dstDir 上传目录到server指定目录
    updir srcDir  上传目录到server程序执行目录
-downdir 下载目录
+* downdir 下载目录
    downdir srdDir dstDir 下载目录到本地指定目录
    downdir srcDir 下载目录到程序执行目录
+   
+* history  指令历史
+* help 打印帮助信息
                                             
