@@ -87,6 +87,7 @@ public class FtpClient {
             //启动文件传输执行器
             TaskExecutor executor = new TaskExecutor(taskQueue, channelPool);
             executor.start();
+            System.out.println("客户端启动完成·");
             //启动客户端命令行工具
             sendInstruction();
             //阻塞直到连接关闭
@@ -121,7 +122,6 @@ public class FtpClient {
                     if (instruction instanceof UpDirInstruction) {
                         instruction.process();
                     } else {
-
                         //目录下载命令，直接发送给服务端
                         ClientContext.getCommunicate().writeAndFlush(StructTransUtil.generateInsStruct(ins));
                     }

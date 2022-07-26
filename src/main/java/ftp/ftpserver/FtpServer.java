@@ -43,6 +43,7 @@ public class FtpServer {
                     ch.pipeline().addLast("structDecoder", new FtpServerHandler());
                 }
             });
+            System.out.println("服务端启动完成");
             ChannelFuture cf = bootstrap.bind(port).sync();
             cf.channel().closeFuture().sync();
         } finally {
