@@ -1,7 +1,7 @@
 package ftp.handler;
 
 import ftp.status.Status;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class FtpClientHandler extends BaseHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(StructTransUtil.generateIdStruct());
+        ctx.writeAndFlush(TransStructUtil.generateIdStruct());
     }
 
     public FtpClientHandler(Status status) {

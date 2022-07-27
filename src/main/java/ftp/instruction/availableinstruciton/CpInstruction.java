@@ -5,7 +5,7 @@ import ftp.instruction.Instruction;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 import java.io.IOException;
 
@@ -28,9 +28,9 @@ public class CpInstruction extends Instruction {
             result = false;
         }
         if (result) {
-            return StructTransUtil.generateResponse("拷贝成功\n");
+            return TransStructUtil.generateResponse("拷贝成功\n");
         }
-        return StructTransUtil.generateResponse("拷贝失败\n");
+        return TransStructUtil.generateResponse("拷贝失败\n");
     }
 
     @Override

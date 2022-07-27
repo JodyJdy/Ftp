@@ -7,7 +7,7 @@ import ftp.status.ServerClientStatus;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
@@ -47,7 +47,7 @@ public class UpInstruction extends Instruction {
             FileUtils.touch(file);
             OutputStream outputStream = new FileOutputStream(file);
             status.setOutputStream(outputStream);
-            return StructTransUtil.generateLastSucc();
+            return TransStructUtil.generateLastSucc();
         } catch (IOException e) {
             e.printStackTrace();
         }

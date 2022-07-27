@@ -5,7 +5,7 @@ package ftp.instruction.availableinstruciton;/**
 import ftp.TransStruct;
 import ftp.instruction.Instruction;
 import ftp.status.Status;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 /** * 当前目录指令  client -- > server */
 public class PwdInstruction extends Instruction {
@@ -15,7 +15,7 @@ public class PwdInstruction extends Instruction {
 
     @Override
     public TransStruct execute() {
-        return StructTransUtil.generateResponse(status.getDir() + "\n");
+        return TransStructUtil.generateResponse(status.getDir() + "\n");
     }
 
     @Override

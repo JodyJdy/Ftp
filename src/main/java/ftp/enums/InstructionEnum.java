@@ -1,5 +1,6 @@
 package ftp.enums;
 
+import ftp.instruction.Instruction;
 import ftp.instruction.availableinstruciton.*;
 
 /**
@@ -19,11 +20,12 @@ public enum InstructionEnum {
     LOCAL("local", LocalInstruction.class), HELP("help", HelpInstruction.class),
     UP_DIR("updir", UpDirInstruction.class), DOWN_DIR("downdir", DownDirInstruction.class),
     DOWN_DIR_CONTENTS("downdircontents", DownDirContentsInstruction.class),
+    EXIT("exit",ExitInstruction.class),
     ID("id", IdInstruction.class);
     String ins;
-    Class clazz;
+    Class<? extends Instruction> clazz;
 
-    InstructionEnum(String ins, Class clazz) {
+    InstructionEnum(String ins, Class<? extends Instruction> clazz) {
         this.ins = ins;
         this.clazz = clazz;
     }
@@ -32,7 +34,7 @@ public enum InstructionEnum {
         return ins;
     }
 
-    public Class getClazz() {
+    public Class<? extends Instruction> getClazz() {
         return clazz;
     }
 }

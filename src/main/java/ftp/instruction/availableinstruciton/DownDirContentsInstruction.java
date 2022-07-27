@@ -13,7 +13,7 @@ import ftp.util.RegexUtil;
 import static ftp.util.FileUtil.CUR_DIR;
 
 /**
- * 服务端向客户端返回目录里面哪些文件是可以下载的
+ * 服务端向客户端返回目录里面哪些文件是可以下载的，
  */
 public class DownDirContentsInstruction extends Instruction {
     @Override
@@ -49,6 +49,7 @@ public class DownDirContentsInstruction extends Instruction {
 
         @Override
         public void run() {
+            //将下载任务添加任务队列里面
             for (int i = 1; i < files.length; i++) {
                 ClientContext.getTaskQueue().addFileTransTask(
                         InstructionEnum.DOWN.getIns() + FileUtil.SPLIT + files[i]

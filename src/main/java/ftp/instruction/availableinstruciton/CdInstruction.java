@@ -7,7 +7,7 @@ import ftp.status.ServerClientStatus;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 import java.io.File;
 import java.util.List;
@@ -20,6 +20,8 @@ public class CdInstruction extends Instruction {
         super(ins, status);
     }
 
+
+
     @Override
     public TransStruct execute() {
         String[] splits = RegexUtil.splitInstruciton(ins);
@@ -31,7 +33,7 @@ public class CdInstruction extends Instruction {
             //修改同一client的channel的当前目录信息，目前只有cd命令需要这样做
             if (status instanceof ServerClientStatus) {
                 List<ServerClientStatus> statusList = ClientStatusCache.getStatus(status.getId());
-                synchronized (statusList) {
+                synchronized (status) {
                     for (ServerClientStatus s : statusList) {
                         s.setDir(status.getDir());
                     }
@@ -39,7 +41,7 @@ public class CdInstruction extends Instruction {
             }
             result = "";
         }
-        return StructTransUtil.generateResponse(result);
+        return TransStructUtil.generateResponse(result);
     }
 
     @Override

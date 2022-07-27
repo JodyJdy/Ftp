@@ -4,7 +4,7 @@ import ftp.ftpclient.ClientContext;
 import ftp.instruction.Instruction;
 import ftp.instruction.InstructionResolver;
 import ftp.status.ClientStatus;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 /**
  * 传输任务执行器
@@ -38,7 +38,7 @@ public class TaskExecutor extends Thread {
                 Instruction instruction = InstructionResolver.resolver(ins, client);
                 // 执行传输任务
                 instruction.preProcess();
-                client.getChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins)).sync();
+                client.getChannel().writeAndFlush(TransStructUtil.generateInsStruct(ins)).sync();
             } catch (Exception e) {
                 e.printStackTrace();
             }

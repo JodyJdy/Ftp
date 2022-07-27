@@ -12,9 +12,10 @@ import io.netty.util.CharsetUtil;
 import static ftp.util.FileUtil.SPLIT;
 
 /**
- * * @date 2021/12/2
+ * 操作 TransStruct的工具类
+ *  @date 2021/12/2
  **/
-public class StructTransUtil {
+public class TransStructUtil {
     /**
      * transStruct 转 byteBuf
      */
@@ -66,7 +67,7 @@ public class StructTransUtil {
         TransStruct t = new TransStruct();
         t.setType(TransType.INSTRUCTION.getValue());
         t.setContents(content.getBytes(CharsetUtil.UTF_8));
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
@@ -77,7 +78,7 @@ public class StructTransUtil {
         TransStruct t = new TransStruct();
         t.setType(TransType.DATA.getValue());
         t.setStatus(DataTransStatus.LAST_SUCC.getBytes());
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
@@ -88,19 +89,19 @@ public class StructTransUtil {
         TransStruct t = new TransStruct();
         t.setType(TransType.DATA.getValue());
         t.setStatus(DataTransStatus.TRANS_DONE.getBytes());
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
     /**
-     * 生成传输完毕的TransStuct
+     * 生成传输完毕的TransStruct
      */
     public static TransStruct generateTransDone(byte[] contents) {
         TransStruct t = new TransStruct();
         t.setType(TransType.DATA.getValue());
         t.setStatus(DataTransStatus.TRANS_DONE.getBytes());
         t.setContents(contents);
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
@@ -112,7 +113,7 @@ public class StructTransUtil {
         t.setType(TransType.DATA.getValue());
         t.setStatus(DataTransStatus.TRANSING.getBytes());
         t.setContents(bytes);
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
@@ -124,7 +125,7 @@ public class StructTransUtil {
         t.setType(TransType.INSTRUCTION.getValue());
         t.setStatus(DataTransStatus.TRANSING.getBytes());
         t.setContents((InstructionEnum.INSTRUCTION_RESPONSE.getIns() + SPLIT + content).getBytes(CharsetUtil.UTF_8));
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
@@ -136,18 +137,18 @@ public class StructTransUtil {
         t.setType(TransType.INSTRUCTION.getValue());
         t.setStatus(DataTransStatus.TRANSING.getBytes());
         t.setContents((InstructionEnum.DOWN_DIR_CONTENTS.getIns() + SPLIT + content).getBytes(CharsetUtil.UTF_8));
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 
     /**
-     * 生成包含id的Transstruct
+     * 生成包含id的TransStruct
      */
     public static TransStruct generateIdStruct() {
         TransStruct t = new TransStruct();
         t.setType(TransType.INSTRUCTION.getValue());
         t.setContents((InstructionEnum.ID.getIns() + SPLIT + ClientContext.getId()).getBytes(CharsetUtil.UTF_8));
-        StructTransUtil.setSize(t);
+        TransStructUtil.setSize(t);
         return t;
     }
 }

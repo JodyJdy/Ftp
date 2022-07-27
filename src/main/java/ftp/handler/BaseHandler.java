@@ -12,7 +12,7 @@ import ftp.status.ClientStatus;
 import ftp.status.Status;
 import ftp.util.ByteUtil;
 import ftp.util.FileUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
@@ -72,11 +72,11 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
                 switch (DataTransStatus.getStatus(msg.getStatus())) {
                     case TRANSING:
                         //告诉对方，本次传输成功
-                        ctx.writeAndFlush(StructTransUtil.generateLastSucc());
+                        ctx.writeAndFlush(TransStructUtil.generateLastSucc());
                         break;
                     case TRANS_DONE:
                         //告诉对方文件已经传输完成
-                        ctx.writeAndFlush(StructTransUtil.generateTransDone()).sync();
+                        ctx.writeAndFlush(TransStructUtil.generateTransDone()).sync();
                         closeFileTrans();
                         break;
                     default:
@@ -114,9 +114,9 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
         //传输完毕
         if (status.getPos() + bytes.length == status.getEnd()) {
             //未传输完毕
-            t = StructTransUtil.generateTransDone(bytes);
+            t = TransStructUtil.generateTransDone(bytes);
         } else {
-            t = StructTransUtil.generateTransing(bytes);
+            t = TransStructUtil.generateTransing(bytes);
         }
         status.setPos(status.getPos() + len);
         ctx.writeAndFlush(t);

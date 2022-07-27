@@ -10,7 +10,7 @@ import ftp.status.ServerClientStatus;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 客户端向服务端发起下载文件的指令
  * 下载指令  client -- > server     指令格式:  down fileName
  */
 public class DownInstruction extends Instruction {
@@ -46,7 +47,7 @@ public class DownInstruction extends Instruction {
             } catch (IOException e) {
                 return null;
             }
-            return StructTransUtil.generateInsStruct(InstructionEnum.COULD_DOWN.getIns());
+            return TransStructUtil.generateInsStruct(InstructionEnum.COULD_DOWN.getIns());
         }
         return null;
     }

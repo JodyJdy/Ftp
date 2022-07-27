@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.Stack;
 import java.util.concurrent.FutureTask;
 
-/** * 用于在记录客户端自身的状态 */
+/** *
+ * 用于在记录客户端自身的状态
+ */
 public class ClientStatus extends Status {
     public ClientStatus() {
         System.out.println("初始化ClientStatus");
@@ -18,9 +20,13 @@ public class ClientStatus extends Status {
         }
     }
 
-    /**     * 历史命令     */
+    /**
+     *  历史命令
+     */
     private Stack<String> history = new Stack<>();
-    /**     * 当前执行任务对应的 FutureTask     */
+    /**
+     *  当前执行任务对应的 FutureTask
+     */
     private FutureTask<Void> task;
 
     private Channel channel;

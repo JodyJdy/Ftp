@@ -5,7 +5,7 @@ import ftp.status.Status;
 import ftp.util.ByteUtil;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 import java.io.File;
 import java.util.List;
@@ -33,9 +33,9 @@ public class LsInstruction extends Instruction {
             fileList = FileUtil.lsFile(splits[1], status);
         }
         if (fileList == null) {
-            return StructTransUtil.generateResponse("目录不存在");
+            return TransStructUtil.generateResponse("目录不存在");
         }
-        return StructTransUtil.generateResponse(transToResult(fileList));
+        return TransStructUtil.generateResponse(transToResult(fileList));
     }
 
     private static String transToResult(List<File> files) {

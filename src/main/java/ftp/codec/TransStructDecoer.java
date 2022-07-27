@@ -1,6 +1,6 @@
 package ftp.codec;
 
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,6 +15,6 @@ import java.util.List;
 public class TransStructDecoer extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
-        out.add(StructTransUtil.transToStruct(msg));
+        out.add(TransStructUtil.transToStruct(msg));
     }
 }

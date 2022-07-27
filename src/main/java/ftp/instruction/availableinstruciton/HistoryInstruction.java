@@ -28,4 +28,5 @@ public class HistoryInstruction extends Instruction {
     @Override
     public void preProcess() {
         //history指令不记录
-    }}
+    }
+}

@@ -8,8 +8,8 @@ import ftp.status.Status;
  * 指令
  */
 public abstract class Instruction {
-    public String ins;
-    public Status status;
+    public  String ins;
+    public final Status status;
 
     public Instruction(String ins, Status status) {
         this.ins = ins;
@@ -31,15 +31,4 @@ public abstract class Instruction {
         }
     }
 
-    public String getIns() {
-        return ins;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
 }

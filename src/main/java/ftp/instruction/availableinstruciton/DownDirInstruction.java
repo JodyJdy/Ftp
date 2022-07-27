@@ -5,7 +5,7 @@ import ftp.instruction.Instruction;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class DownDirInstruction extends Instruction {
             sb.append(splits[2]).append(" ");
         }
         fileCollection.forEach(file -> sb.append(file.getPath()).append(" "));
-        return StructTransUtil.generateDownDirContent(sb.toString());
+        return TransStructUtil.generateDownDirContent(sb.toString());
     }
 
     @Override

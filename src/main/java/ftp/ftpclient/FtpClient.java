@@ -2,6 +2,7 @@ package ftp.ftpclient;
 
 import ftp.codec.TransStructDecoer;
 import ftp.codec.TransStructEncoder;
+import ftp.enums.InstructionEnum;
 import ftp.ftpclient.trans.FileTransTaskQueue;
 import ftp.ftpclient.trans.TaskExecutor;
 import ftp.handler.FtpClientHandler;
@@ -10,7 +11,7 @@ import ftp.instruction.InstructionResolver;
 import ftp.instruction.availableinstruciton.UpDirInstruction;
 import ftp.status.ClientStatus;
 import ftp.util.ByteUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -112,36 +113,38 @@ public class FtpClient {
     }
 
     public void execute(String ins) {
+
         //检查指令是否存在
-        if(!InstructionResolver.checkExist(ins)){
+        InstructionEnum check = InstructionResolver.checkExist(ins);
+        if(check == null){
             System.out.println("指令不存在");
             return;
         }
         //@todo 这块的逻辑有点乱
         // 如果是传输命令
-        if (InstructionResolver.isTrans(ins)) {
-            //如果是传输文件的命令，直接丢到任务队列里面
-            if (InstructionResolver.isFileTrans(ins)) {
+        if (InstructionResolver.isTrans(check)) {
+            //如果是传输单个文件的命令，直接丢到任务队列里面
+            if (InstructionEnum.UP == check || InstructionEnum.DOWN == check) {
                 ClientContext.getTaskQueue().addFileTransTask(ins);
             } else {
                 //传输目录的命令
-                Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
-                if (instruction instanceof UpDirInstruction) {
+                Instruction instruction = InstructionResolver.resolver(check, ClientContext.getClientStatus(),ins);
+                if (check == InstructionEnum.UP_DIR) {
                     instruction.preProcess();
-                } else {
+                } else if(check == InstructionEnum.DOWN_DIR) {
                     //目录下载命令，直接发送给服务端
-                    ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
+                    ClientContext.getCommunicateChannel().writeAndFlush(TransStructUtil.generateInsStruct(ins));
                 }
             }
         } else {
-            Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
+            Instruction instruction = InstructionResolver.resolver(check, ClientContext.getClientStatus(),ins);
             instruction.preProcess();
             //如果是本地执行指令，直接执行，直接执行，否则发送到服务端
-            if (InstructionResolver.localExec(ins)) {
+            if (InstructionResolver.localExec(check)) {
                 instruction.execute();
-            //使用通信channel发送到服务端
             } else {
-                ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
+                //使用通信channel发送到指令到服务端
+                ClientContext.getCommunicateChannel().writeAndFlush(TransStructUtil.generateInsStruct(ins));
             }
         }
     }

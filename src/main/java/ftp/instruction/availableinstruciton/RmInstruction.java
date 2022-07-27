@@ -7,7 +7,7 @@ import ftp.instruction.Instruction;
 import ftp.status.Status;
 import ftp.util.FileUtil;
 import ftp.util.RegexUtil;
-import ftp.util.StructTransUtil;
+import ftp.util.TransStructUtil;
 
 import java.io.IOException;
 
@@ -27,9 +27,9 @@ public class RmInstruction extends Instruction {
             result = false;
         }
         if (result) {
-            return StructTransUtil.generateResponse("删除成功\n");
+            return TransStructUtil.generateResponse("删除成功\n");
         }
-        return StructTransUtil.generateResponse("删除失败\n");
+        return TransStructUtil.generateResponse("删除失败\n");
     }
 
     @Override
