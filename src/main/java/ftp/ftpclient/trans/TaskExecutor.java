@@ -11,11 +11,9 @@ import ftp.util.StructTransUtil;
  **/
 public class TaskExecutor extends Thread {
     private FileTransTaskQueue queue;
-    private ChannelPool channelPool;
 
-    public TaskExecutor(FileTransTaskQueue queue, ChannelPool pool) {
+    public TaskExecutor(FileTransTaskQueue queue) {
         this.queue = queue;
-        this.channelPool = pool;
     }
 
     @Override
@@ -26,20 +24,21 @@ public class TaskExecutor extends Thread {
                 if (task == null) {
                     continue;
                 }
-                ChannelStatus c = channelPool.getIdleChannel();
-                if (c == null) {
+                //获取空闲的客户端
+                ClientStatus client = ClientContext.getIdleClient();
+                if (client == null) {
                     queue.addFileTransTask(task);
                     continue;
                 }
-                ClientStatus workStatus = c.getClientStatus();
-                workStatus.setTask(task.getFutureTask());
+                //设置客户端的任务
+                client.setTask(task.getFutureTask());
                 String ins = task.getIns();
                 //设置工作信道使用的路径
-                workStatus.setDir(ClientContext.getClientStatus().getDir());
-                Instruction instruction = InstructionResolver.resolver(ins, workStatus);
+                client.setDir(ClientContext.getClientStatus().getDir());
+                Instruction instruction = InstructionResolver.resolver(ins, client);
                 // 执行传输任务
                 instruction.process();
-                c.getChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins)).sync();
+                client.getChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins)).sync();
             } catch (Exception e) {
                 e.printStackTrace();
             }

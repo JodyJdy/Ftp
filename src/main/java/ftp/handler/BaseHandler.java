@@ -4,6 +4,7 @@ import ftp.TransStruct;
 import ftp.enums.DataTransStatus;
 import ftp.enums.InstructionEnum;
 import ftp.enums.TransType;
+import ftp.ftpclient.ClientContext;
 import ftp.instruction.Instruction;
 import ftp.instruction.InstructionResolver;
 import ftp.instruction.availableinstruciton.InstructionResponse;
@@ -105,9 +106,11 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TransStruct t;        //传输完毕
+        TransStruct t;
+        //传输完毕
         if (status.getPos() + bytes.length == status.getEnd()) {
-            t = StructTransUtil.generateTransDone(bytes);        //未传输完毕
+            //未传输完毕
+            t = StructTransUtil.generateTransDone(bytes);
         } else {
             t = StructTransUtil.generateTransing(bytes);
         }
@@ -137,8 +140,8 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
             ClientStatus clientStatus = (ClientStatus) status;
             clientStatus.getTask().run();
             clientStatus.setTask(null);
-            //任务传输完毕，将信道归还到池子里去
-            clientStatus.getChannelStatus().backChannel();
+            //任务传输完毕，将客户端归还到池子里去
+            ClientContext.backClient(clientStatus);
         }
     }
 

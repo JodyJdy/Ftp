@@ -2,8 +2,6 @@ package ftp.ftpclient;
 
 import ftp.codec.TransStructDecoer;
 import ftp.codec.TransStructEncoder;
-import ftp.ftpclient.trans.ChannelPool;
-import ftp.ftpclient.trans.ChannelStatus;
 import ftp.ftpclient.trans.FileTransTaskQueue;
 import ftp.ftpclient.trans.TaskExecutor;
 import ftp.handler.FtpClientHandler;
@@ -71,22 +69,26 @@ public class FtpClient {
                 }
             });
             //连接服务端，并设置通信信道，信道状态到 客户端上下文对象中
-            ClientContext.setCommunicateChannel(bootstrap.connect().sync().channel());
-            //建立一个 专门传输指令的Channel
-            ClientContext.setClientStatus((ClientStatus) ClientContext.getCommunicateChannel().pipeline().get(FtpClientHandler.class).getStatus());
-            List<ChannelStatus> statuses = new ArrayList<>();
+            Channel communicateChannel = bootstrap.connect().sync().channel();
+            ClientStatus clientStatus = (ClientStatus)communicateChannel.pipeline().get(FtpClientHandler.class).getStatus();
+            ClientContext.setCommunicateChannel(communicateChannel);
+            ClientContext.setClientStatus(clientStatus);
+
+            List<ClientStatus> clientStatuses = new ArrayList<>();
             //创建工作信道，用于传输文件
             for (int i = 0; i < workerChannelNum; i++) {
                 ChannelFuture tempFuture = bootstrap.connect().sync();
-                Channel tempChannel = tempFuture.channel();
-                FtpClientHandler handler = tempChannel.pipeline().get(FtpClientHandler.class);
-                statuses.add(new ChannelStatus((ClientStatus) handler.getStatus(), tempChannel));
+                Channel transChannel = tempFuture.channel();
+                FtpClientHandler handler = transChannel.pipeline().get(FtpClientHandler.class);
+                ClientStatus transClientStatus =(ClientStatus)handler.getStatus();
+                transClientStatus.setChannel(transChannel);
+                clientStatuses.add(transClientStatus);
             }
-            ChannelPool channelPool = new ChannelPool(statuses);
+            ClientContext.setTransClientStatus(clientStatuses);
             FileTransTaskQueue taskQueue = new FileTransTaskQueue();
             ClientContext.setTaskQueue(taskQueue);
             //启动文件传输执行器
-            TaskExecutor executor = new TaskExecutor(taskQueue, channelPool);
+            TaskExecutor executor = new TaskExecutor(taskQueue);
             executor.start();
             System.out.println("客户端启动完成·");
             //启动客户端命令行工具

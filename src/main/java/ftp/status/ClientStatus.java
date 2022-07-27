@@ -1,6 +1,6 @@
 package ftp.status;
 
-import ftp.ftpclient.trans.ChannelStatus;
+import io.netty.channel.Channel;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,15 +22,15 @@ public class ClientStatus extends Status {
     private Stack<String> history = new Stack<>();
     /**     * 当前执行任务对应的 FutureTask     */
     private FutureTask<Void> task;
-    /**     * 当前任务对应的 ChannelStatus     */
-    private ChannelStatus channelStatus;
 
-    public ChannelStatus getChannelStatus() {
-        return channelStatus;
+    private Channel channel;
+
+    public Channel getChannel() {
+        return channel;
     }
 
-    public void setChannelStatus(ChannelStatus channelStatus) {
-        this.channelStatus = channelStatus;
+    public void setChannel(Channel channel) {
+        this.channel = channel;
     }
 
     public Stack<String> getHistory() {
