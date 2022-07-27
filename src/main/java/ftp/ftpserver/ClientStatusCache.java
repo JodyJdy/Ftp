@@ -15,7 +15,7 @@ public class ClientStatusCache {
 
     public static synchronized void addStatus(String key, ServerClientStatus serverClientStatus) {
         List<ServerClientStatus> statusList;
-        if (!contains(key)) {
+        if (!statusMap.containsKey(key)) {
             statusList = new ArrayList<>();
             statusMap.put(key, statusList);
         } else {
@@ -26,9 +26,5 @@ public class ClientStatusCache {
 
     public static List<ServerClientStatus> getStatus(String key) {
         return statusMap.get(key);
-    }
-
-    public static boolean contains(String key) {
-        return statusMap.containsKey(key);
     }
 }

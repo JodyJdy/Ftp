@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * * @date 2021/12/3 * * 指令解析
+ *
+ * @date 2021/12/3  * 指令解析
  **/
 public class InstructionResolver {
     /**
