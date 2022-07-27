@@ -113,35 +113,36 @@ public class FtpClient {
 
     public void execute(String ins) {
         //检查指令是否存在
-        if (InstructionResolver.checkExist(ins)) {
-            // 如果是传输命令
-            if (InstructionResolver.isTrans(ins)) {
-                //如果是传输文件的命令，直接丢到任务队列里面
-                if (InstructionResolver.isFileTrans(ins)) {
-                    ClientContext.getTaskQueue().addFileTransTask(ins);
-                } else {
-                    //传输目录的命令
-                    Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
-                    if (instruction instanceof UpDirInstruction) {
-                        instruction.preProcess();
-                    } else {
-                        //目录下载命令，直接发送给服务端
-                        ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
-                    }
-                }
+        if(!InstructionResolver.checkExist(ins)){
+            System.out.println("指令不存在");
+            return;
+        }
+        //@todo 这块的逻辑有点乱
+        // 如果是传输命令
+        if (InstructionResolver.isTrans(ins)) {
+            //如果是传输文件的命令，直接丢到任务队列里面
+            if (InstructionResolver.isFileTrans(ins)) {
+                ClientContext.getTaskQueue().addFileTransTask(ins);
             } else {
+                //传输目录的命令
                 Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
-                instruction.preProcess();
-                //如果是本地执行指令，直接执行，直接执行，否则发送到服务端
-                if (InstructionResolver.localExec(ins)) {
-                    instruction.execute();
-                //使用通信channel发送到服务端
+                if (instruction instanceof UpDirInstruction) {
+                    instruction.preProcess();
                 } else {
+                    //目录下载命令，直接发送给服务端
                     ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
                 }
             }
         } else {
-            System.out.println("指令不存在");
+            Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
+            instruction.preProcess();
+            //如果是本地执行指令，直接执行，直接执行，否则发送到服务端
+            if (InstructionResolver.localExec(ins)) {
+                instruction.execute();
+            //使用通信channel发送到服务端
+            } else {
+                ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
+            }
         }
     }
 }
