@@ -28,8 +28,8 @@ public class UpDirInstruction extends Instruction {
     }
 
     @Override
-    public void process() {
-        super.process();
+    public void preProcess() {
+        super.preProcess();
         String[] splits = RegexUtil.splitInstruciton(ins);
         // 上传目录
         String sourceDir;

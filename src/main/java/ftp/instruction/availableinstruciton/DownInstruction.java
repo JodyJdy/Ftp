@@ -52,8 +52,8 @@ public class DownInstruction extends Instruction {
     }
 
     @Override
-    public void process() {
-        super.process();
+    public void preProcess() {
+        super.preProcess();
         ClientStatus status = (ClientStatus) super.status;
         //获取下载后保存为的文件名称， 例如  down  a.txt /b/c, 那么下载后的文件名称为 /b/c/a/txt
         String[] splits = RegexUtil.splitInstruciton(ins);

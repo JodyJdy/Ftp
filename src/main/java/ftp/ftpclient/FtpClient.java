@@ -123,7 +123,7 @@ public class FtpClient {
                     //传输目录的命令
                     Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
                     if (instruction instanceof UpDirInstruction) {
-                        instruction.process();
+                        instruction.preProcess();
                     } else {
                         //目录下载命令，直接发送给服务端
                         ClientContext.getCommunicateChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins));
@@ -131,7 +131,7 @@ public class FtpClient {
                 }
             } else {
                 Instruction instruction = InstructionResolver.resolver(ins, ClientContext.getClientStatus());
-                instruction.process();
+                instruction.preProcess();
                 //如果是本地执行指令，直接执行，直接执行，否则发送到服务端
                 if (InstructionResolver.localExec(ins)) {
                     instruction.execute();

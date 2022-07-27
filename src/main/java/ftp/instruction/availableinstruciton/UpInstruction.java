@@ -58,8 +58,8 @@ public class UpInstruction extends Instruction {
      * 由客户端执行
      */
     @Override
-    public void process() {
-        super.process();
+    public void preProcess() {
+        super.preProcess();
         ClientStatus status = (ClientStatus) super.status;
         status.getHistory().add(ins);
         // up xxx.txt 或者 up xxx.txt xxxx

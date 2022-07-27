@@ -17,14 +17,14 @@ public abstract class Instruction {
     }
 
     /**
-     * 指令的执行,一般在服务端
+     * 指令的执行, 服务端执行 （如果是local类的指令，在客户端执行）
      */
     public abstract TransStruct execute();
 
     /**
-     * 指令的处理 一般在客户端
+     * 指令的预处理 客户端执行，例如客户端会将指令加入到 history里面
      */
-    public void process() {
+    public void preProcess() {
         if (status instanceof ClientStatus) {
             ClientStatus clientStatus = (ClientStatus) status;
             clientStatus.getHistory().add(ins);

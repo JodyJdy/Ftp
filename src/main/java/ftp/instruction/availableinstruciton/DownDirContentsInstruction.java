@@ -18,7 +18,7 @@ import static ftp.util.FileUtil.CUR_DIR;
 public class DownDirContentsInstruction extends Instruction {
     @Override
     public TransStruct execute() {
-        super.process();
+        super.preProcess();
         String contents = ins.substring(InstructionEnum.DOWN_DIR_CONTENTS.getIns().length() + 1);
         contents = contents.trim();
         String[] files = RegexUtil.splitInstruciton(contents);

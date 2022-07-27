@@ -13,7 +13,7 @@ public class TransStruct {
      */
     private Byte type;
     /**
-     * 数据传输中有效，两bit位     * 00 默认     * 01 传输中     * 10 上次传输成功     * 11 传输完毕
+     * 数据传输中有效，两bit位      00 默认      01 传输中      10 上次传输成功      11 传输完毕
      */
     private byte[] status = new byte[]{(byte) 0, (byte) 0};
     /**

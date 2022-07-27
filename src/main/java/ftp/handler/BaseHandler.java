@@ -38,10 +38,12 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
         //指令
         if (TransType.INSTRUCTION.getValue() == msg.getType()) {
             Instruction instruction = InstructionResolver.resolver(new String(msg.getContents(), CharsetUtil.UTF_8), status);
+            //接受到ls，cd这类命令的响应，直接输出
             if (instruction instanceof InstructionResponse) {
                 outResponse(msg);
                 return;
             }
+            //接受到指令，执行后将结果返回回去
             TransStruct response = instruction.execute();
             // response == null 代表指令执行后，不需要响应给对方
             if (response != null) {
@@ -63,15 +65,17 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
                 }
             //外部读取保存到本地
             } else if (status.getOutputStream() != null) {
+                //将数据存入本地
                 if (msg.getContents() != null) {
                     status.getOutputStream().write(msg.getContents());
                 }
                 switch (DataTransStatus.getStatus(msg.getStatus())) {
                     case TRANSING:
+                        //告诉对方，本次传输成功
                         ctx.writeAndFlush(StructTransUtil.generateLastSucc());
                         break;
                     case TRANS_DONE:
-                        //告诉对方已经收到
+                        //告诉对方文件已经传输完成
                         ctx.writeAndFlush(StructTransUtil.generateTransDone()).sync();
                         closeFileTrans();
                         break;

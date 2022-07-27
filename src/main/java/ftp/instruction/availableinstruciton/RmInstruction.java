@@ -33,7 +33,7 @@ public class RmInstruction extends Instruction {
     }
 
     @Override
-    public void process() {
-        super.process();
+    public void preProcess() {
+        super.preProcess();
     }
 }

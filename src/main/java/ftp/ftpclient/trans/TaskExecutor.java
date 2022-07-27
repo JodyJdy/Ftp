@@ -37,7 +37,7 @@ public class TaskExecutor extends Thread {
                 client.setDir(ClientContext.getClientStatus().getDir());
                 Instruction instruction = InstructionResolver.resolver(ins, client);
                 // 执行传输任务
-                instruction.process();
+                instruction.preProcess();
                 client.getChannel().writeAndFlush(StructTransUtil.generateInsStruct(ins)).sync();
             } catch (Exception e) {
                 e.printStackTrace();
