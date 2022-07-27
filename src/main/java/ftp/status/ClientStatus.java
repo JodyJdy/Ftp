@@ -25,9 +25,9 @@ public class ClientStatus extends Status {
      */
     private Stack<String> history = new Stack<>();
     /**
-     *  当前执行任务对应的 FutureTask
+     *  当前传输任务执行完成后需要执行的操作
      */
-    private FutureTask<Void> task;
+    private FutureTask<Void> transDoneTask;
 
     private Channel channel;
 
@@ -43,11 +43,11 @@ public class ClientStatus extends Status {
         return history;
     }
 
-    public FutureTask<Void> getTask() {
-        return task;
+    public FutureTask<Void> getTransDoneTask() {
+        return transDoneTask;
     }
 
-    public void setTask(FutureTask<Void> task) {
-        this.task = task;
+    public void setTransDoneTask(FutureTask<Void> transDoneTask) {
+        this.transDoneTask = transDoneTask;
     }
 }

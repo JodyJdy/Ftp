@@ -31,7 +31,7 @@ public class TaskExecutor extends Thread {
                     continue;
                 }
                 //设置客户端的任务
-                client.setTask(task.getFutureTask());
+                client.setTransDoneTask(task.getTransDoneTask());
                 String ins = task.getIns();
                 //设置工作信道使用的路径
                 client.setDir(ClientContext.getClientStatus().getDir());

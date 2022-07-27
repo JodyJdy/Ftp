@@ -11,20 +11,20 @@ public class FileTransTask {
      */
     private final String ins;
     /**
-     * 文件传输对应的 Future
+     * 文件传输完毕后执行的任务，在其他线程可以调用 task.get()，阻塞直到任务完成
      */
-    private final FutureTask<Void> futureTask;
+    private final FutureTask<Void> transDoneTask;
 
-    FileTransTask(String instruction, FutureTask<Void> futureTask) {
+    FileTransTask(String instruction, FutureTask<Void> transDoneTask) {
         this.ins = instruction;
-        this.futureTask = futureTask;
+        this.transDoneTask = transDoneTask;
     }
 
     public String getIns() {
         return ins;
     }
 
-    FutureTask<Void> getFutureTask() {
-        return futureTask;
+    FutureTask<Void> getTransDoneTask() {
+        return transDoneTask;
     }
 }

@@ -142,8 +142,9 @@ public class BaseHandler extends SimpleChannelInboundHandler<TransStruct> {
         status.setEnd(0);
         if (status instanceof ClientStatus) {
             ClientStatus clientStatus = (ClientStatus) status;
-            clientStatus.getTask().run();
-            clientStatus.setTask(null);
+            //传输完成后，执行后置任务
+            clientStatus.getTransDoneTask().run();
+            clientStatus.setTransDoneTask(null);
             //任务传输完毕，将客户端归还到池子里去
             ClientContext.backClient(clientStatus);
         }
