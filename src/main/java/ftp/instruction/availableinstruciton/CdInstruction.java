@@ -30,7 +30,7 @@ public class CdInstruction extends Instruction {
         if (file == null) {
             result = "目录不存在\n";
         } else {
-            //修改同一client的channel的当前目录信息，目前只有cd命令需要这样做
+            //修改同一client的channel的当前目录信息，目前只有cd命令需要这样做，需要保证线程安全
             if (status instanceof ServerClientStatus) {
                 List<ServerClientStatus> statusList = ClientStatusCache.getStatus(status.getId());
                 synchronized (status) {
