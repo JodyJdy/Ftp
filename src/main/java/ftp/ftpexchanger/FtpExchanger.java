@@ -30,11 +30,8 @@ public class FtpExchanger {
         this.connectAddress = connectAddress;
     }
 
-    public static void main(String[] args) throws Exception {
-        new FtpExchanger(8888, 9999, "localhost").start();
-    }
 
-    private void start() throws Exception {
+    public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(10);
         ExchangeByteBufDecoder bufDecoder = new ExchangeByteBufDecoder(new ChannelExchanger());
@@ -64,6 +61,8 @@ public class FtpExchanger {
             ChannelFuture cf = serverBootstrap.bind(bindPort).sync();
             ExchangerContext.setBootstrap(clientBootstrap);
             cf.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

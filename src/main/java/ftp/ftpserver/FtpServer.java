@@ -24,11 +24,9 @@ public class FtpServer {
         this.port = port;
     }
 
-    public static void main(String[] args) throws Exception {
-        new FtpServer(9900).start();
-    }
 
-    private void start() throws Exception {
+
+    public void start()  {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(10);
         try {
@@ -44,8 +42,11 @@ public class FtpServer {
                 }
             });
             System.out.println("服务端启动完成");
-            ChannelFuture cf = bootstrap.bind(port).sync();
+            ChannelFuture cf;
+            cf = bootstrap.bind(port).sync();
             cf.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

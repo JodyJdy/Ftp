@@ -49,11 +49,9 @@ public class FtpClient {
         this.workerChannelNum = workerChannelNum;
     }
 
-    public static void main(String[] args) throws Exception {
-        new FtpClient(9900, "localhost", 5).start();
-    }
 
-    private void start() throws Exception {
+
+    public void start() {
         EventLoopGroup group = new NioEventLoopGroup(4);
         try {
             Bootstrap bootstrap = new Bootstrap();
@@ -96,6 +94,8 @@ public class FtpClient {
             sendInstruction();
             //阻塞直到连接关闭
             ClientContext.getCommunicateChannel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             group.shutdownGracefully();
         }

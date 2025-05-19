@@ -7,8 +7,39 @@ FtpClient可以从FtpServer上传或下载文件以及目录。
 FtpExchanger可以用来中转数据，对于FtpClient与FptServer之间不能直接访问时，可以使用FtpExchanger中转
    FtpClient <--> FtpExchanger <--> FtpExchanger <--> FtpServer
    
+## 启动
+
+### server启动
+```java
+
+public class TestServer {
+    public static void main(String[] args) {
+        new FtpServer(9900).start();
+    }
+}
+
+```
+### client启动
+```java
+
+public class TestClient {
+    public static void main(String[] args) {
+        //指定服务端ip，端口，以及用于传输文件的信道的数量
+        new FtpClient(9900, "localhost", 5).start();
+    }
+}
+```
+```java
+
+public class TestExchanger {
+    public static void main(String[] args) {
+        // 指定服务端ip，端口，以及当前服务监听的端口
+        new FtpExchanger(8888, 9999, "localhost").start();
+    }
+}
+```
    
-## 支持命令
+## 客户端支持命令
 
 数据操作的命令加上 local，操作的是本地文件夹，否则是ftpServer的文件夹，上传下载命令不支持加上local
 
