@@ -1,11 +1,13 @@
 # Ftp
-a project about FtpClient,FtpExchanger,FtpServer
 
-FtpClient可以从FtpServer上传或下载文件以及目录。
-  支持以命令行的形式访问FtpServer上的文件，例如 ls,cd,rm,cp等等。
-  
-FtpExchanger可以用来中转数据，对于FtpClient与FptServer之间不能直接访问时，可以使用FtpExchanger中转
+ 项目包含的功能有：
+ * FtpClient  连接FtpServer，上传/下载文件或目录,支持以命令行的形式访问FtpServer上的文件，例如 ls,cd,rm,cp等等
+ * FtpExchanger 不用于存储任何文件可以用来中转数据，对于FtpClient与FptServer之间不能直接访问时，可以使用FtpExchanger中转
    FtpClient <--> FtpExchanger <--> FtpExchanger <--> FtpServer
+ * FtpServer  接受多个FtpClient的连接，FtpClient可以将文件上传到FtpServer
+
+
+
    
 ## 启动
 
@@ -24,7 +26,7 @@ public class TestServer {
 
 public class TestClient {
     public static void main(String[] args) {
-        //指定服务端ip，端口，以及用于传输文件的信道的数量
+        //指定服务端ip:port,(也可以是exchanger的ip:port) 以及用于传输文件的信道的数量
         new FtpClient(9900, "localhost", 5).start();
     }
 }
@@ -34,7 +36,7 @@ public class TestClient {
 
 public class TestExchanger {
     public static void main(String[] args) {
-        // 指定服务端ip，端口，以及当前服务监听的端口
+        // 指定当前服务监听的端口: 8888, 服务端端口: 9999  服务端ip: localhost
         new FtpExchanger(8888, 9999, "localhost").start();
     }
 }
